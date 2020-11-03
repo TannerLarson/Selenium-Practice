@@ -13,6 +13,17 @@ class AutomationPractice(unittest.TestCase):
         indexPage = page.IndexPage(self.driver)
         assert indexPage.is_title_matches()
 
+    def test_search_skirt(self):
+        # test_title
+        indexPage = page.IndexPage(self.driver)
+        assert indexPage.is_title_matches()
+
+        indexPage.search_text_element = "skirt"
+        indexPage.click_search_button()
+        search_result_page = page.SearchResultPage(self.driver)
+        assert search_result_page.is_results_found()
+
+
     def tearDown(self) -> None:
         self.driver.close()
 
