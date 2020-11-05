@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
+import time
 
 
 def wait_until_found(driver, xpath):
