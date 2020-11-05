@@ -1,4 +1,4 @@
-from locator import *
+from locators import *
 from element import BasePageElement
 
 
@@ -15,8 +15,7 @@ class HomePage(BasePage):
 
     search_text_element = SearchTextElement()
 
-    # --------- TESTS --------------------------------------------------
-
+    # --------- ACTIONS --------------------------------------------------
     def is_page_index(self):
         return self.driver.find_element_by_xpath("//body[@id='index']")
 
@@ -27,14 +26,29 @@ class HomePage(BasePage):
         element = self.driver.find_element(*IndexPageLocators.SEARCH_BUTTON)
         element.click()
 
+    def click_ad_top(self):
+        element = self.driver.find_element(*IndexPageLocators.AD_TOP)
+        element.click()
+
+    def click_contact_us_button(self):
+        element = self.driver.find_element(*IndexPageLocators.CONTACT_US_BUTTON)
+        element.click()
+
 
 class SearchResultPage(BasePage):
     # --------- ELEMENTS -----------------------------------------------
 
     # --------- TESTS --------------------------------------------------
-
     def is_page_search(self):
         return self.driver.find_element_by_xpath("//body[@id='search']")
 
     def is_results_found(self):
         return "No results were found" not in self.driver.page_source
+
+
+class ContactPage(BasePage):
+    # --------- ELEMENTS -----------------------------------------------
+
+    # --------- TESTS --------------------------------------------------
+    def is_page_contact(self):
+        return self.driver.find_element_by_xpath("//body[@id='contact']")

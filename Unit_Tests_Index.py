@@ -1,42 +1,47 @@
 import unittest
 from selenium import webdriver
 import page
+import time
 
 
 class IndexPageTests(unittest.TestCase):
 
-    def setUp(self) -> None:
+    @classmethod
+    def setUpClass(self) -> None:
         self.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
+
+    def setUp(self) -> None:
         self.driver.get("http://automationpractice.com/index.php")
+        self.homePage = page.HomePage(self.driver)
 
-    def tearDown(self) -> None:
+    def _test_is_index(self):
+        assert self.homePage.is_page_index()
+
+    def test_title(self):
+        print("Testing webpage title...")
+        assert self.homePage.is_title_matches()
+
+    def _test_search_button(self):
+        print("Testing search button...")
+        # test_title
+        self.homePage.click_search_button()
+        search_result_page = page.SearchResultPage(self.driver)
+        assert search_result_page.is_page_search()
+
+    def _test_top_ad(self):
+        print("Testing advertisement at top of website")
+        self.homePage.click_ad_top()
+        assert self.homePage.is_page_index()
+
+    def test_contact_us_button(self):
+        print("Testing Contact us button")
+        self.homePage.click_contact_us_button()
+        contact_page = page.ContactPage(self.driver)
+        assert contact_page.is_page_contact()
+
+    @classmethod
+    def tearDownClass(self) -> None:
         self.driver.close()
-
-    # --------- TESTS -----------------------------------------------
-
-    def _test_title(self):
-        indexPage = page.HomePage(self.driver)
-        assert indexPage.is_title_matches()
-
-    def test_search_button(self):
-        # test_title
-        homePage = page.HomePage(self.driver)
-        assert homePage.is_title_matches()
-
-        homePage.click_search_button()
-        search_result_page = page.SearchResultPage(self.driver)
-        assert search_result_page.is_results_found()
-
-    def _test_search_skirt(self):
-        # test_title
-        homePage = page.HomePage(self.driver)
-        assert homePage.is_title_matches()
-
-        homePage.search_text_element = "skirt"
-        homePage.click_search_button()
-        search_result_page = page.SearchResultPage(self.driver)
-        assert search_result_page.is_results_found()
-        self.driver.implicitly_wait(5)
 
 
 if __name__ == "__main__":

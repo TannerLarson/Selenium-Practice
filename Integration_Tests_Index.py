@@ -14,7 +14,7 @@ class IndexPageTests(unittest.TestCase):
 
     # --------- TESTS -----------------------------------------------
 
-    def _test_search_skirt(self):
+    def test_search_skirt(self):
         # test_title
         homePage = page.HomePage(self.driver)
         assert homePage.is_title_matches()
@@ -24,3 +24,6 @@ class IndexPageTests(unittest.TestCase):
         search_result_page = page.SearchResultPage(self.driver)
         assert search_result_page.is_results_found()
         self.driver.implicitly_wait(5)
+
+if __name__ == "__main__":
+    unittest.main()

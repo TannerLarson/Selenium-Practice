@@ -1,6 +1,5 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
-import abc
 
 
 class BasePageElement:
@@ -17,7 +16,7 @@ class BasePageElement:
             WebDriverWait(driver, 5).until(
                 lambda driver: driver.find_element_by_name(self.locator))
         except TimeoutException:
-            assert False, "Locator {} not found".format(self.locator) # TODO AssertionError: Locator q not found
+            assert False, "Locator {} not found".format(self.locator)
         driver.find_element_by_name(self.locator).clear()
         driver.find_element_by_name(self.locator).send_keys(value)
 
