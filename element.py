@@ -14,7 +14,7 @@ class BasePageElement:
         driver = instance.driver
         try:
             WebDriverWait(driver, 5).until(
-                lambda driver: driver.find_element_by_name(self.locator))
+                lambda x: x.find_element_by_name(self.locator))
         except TimeoutException:
             assert False, "Locator {} not found".format(self.locator)
         driver.find_element_by_name(self.locator).clear()

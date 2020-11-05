@@ -1,5 +1,8 @@
 from locators import *
+from globalElements import *
 from element import BasePageElement
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import *
 
 
 class BasePage:
@@ -17,7 +20,7 @@ class HomePage(BasePage):
 
     # --------- ACTIONS --------------------------------------------------
     def is_page_index(self):
-        return self.driver.find_element_by_xpath("//body[@id='index']")
+        return self.driver.find_elements_by_xpath("//body[@id='index']")
 
     def is_title_matches(self):
         return "My Store" in self.driver.title
@@ -40,7 +43,7 @@ class SearchResultPage(BasePage):
 
     # --------- TESTS --------------------------------------------------
     def is_page_search(self):
-        return self.driver.find_element_by_xpath("//body[@id='search']")
+        return bool(self.driver.find_elements_by_xpath("//body[@id='search']"))
 
     def is_results_found(self):
         return "No results were found" not in self.driver.page_source
@@ -51,4 +54,6 @@ class ContactPage(BasePage):
 
     # --------- TESTS --------------------------------------------------
     def is_page_contact(self):
-        return self.driver.find_element_by_xpath("//body[@id='contact']")
+        wait_until_found(self.driver, "//body[@id='contact']")  # TODO: For some reason this refuses to work
+        #return bool(self.driver.find_elements_by_id("contact"))
+
