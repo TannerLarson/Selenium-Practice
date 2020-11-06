@@ -50,16 +50,41 @@ class IndexPageTests(unittest.TestCase):
         time.sleep(0.5)  # Give driver time to navigate
         assert self.homePage.is_page_correct()
 
-    def test_contact_us_button(self):
+    def _test_contact_us_button(self):
         print("Testing Contact us button")
         self.homePage.click_contact_us_button()
-        contact_page = page.ContactPage(self.driver)
-        assert contact_page.is_page_correct(), "is_page_contact failed"
+        contactPage = page.ContactPage(self.driver)
+        assert contactPage.is_page_correct()
+
+    def _test_sign_in_button(self):
+        print("Testing Sign in button")
+        self.homePage.click_sign_in_button()
+        signInPage = page.SignInPage(self.driver)
+        assert signInPage.is_page_correct()
+
+    def _test_account_button(self):
+        print("Testing Account button")
+        self.homePage.sign_in()
+        self.driver.get("http://automationpractice.com/index.php")
+        assert self.homePage.is_page_correct()
+
+        self.homePage.click_account_button()
+        accountPage = page.AccountPage(self.driver)
+        assert accountPage.is_page_correct()
+
+    def test_sign_out_button(self):
+        print("Testing Sign out button")
+        self.homePage.sign_in()
+        self.driver.get("http://automationpractice.com/index.php")
+        assert self.homePage.is_page_correct()
+
+        self.homePage.click_sign_out_button()
+        assert self.homePage.is_page_correct()
 
     def _test_logo_button(self):
         print("Testing logo button")
         self.homePage.click_logo_button()
-        assert self.homePage.is_page_correct(), "is_page_contact failed"
+        assert self.homePage.is_page_correct()
 
     @classmethod
     def tearDownClass(cls) -> None:

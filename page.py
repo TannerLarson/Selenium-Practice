@@ -7,7 +7,6 @@ from element import BasePageElement
 def confirm_correct_page(func):
     def func_wrapper(self):
         xpath = ''
-        print(type(self))
         if isinstance(self, HomePage):
             xpath = "//body[@id='index']"
         elif isinstance(self, SearchResultPage):
@@ -16,6 +15,10 @@ def confirm_correct_page(func):
             xpath = "//body[@id='contact']"
         elif isinstance(self, AccountPage):
             xpath = "//body[@id='my-account']"
+        elif isinstance(self, SignInPage):
+            xpath = "//body[@id='authentication']"
+        else:
+            assert False, "You need to add an elif statement"
         if not wait_until_found(self.driver, xpath):
             assert False, "Page not found"
         else:
@@ -30,6 +33,14 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
 
+    # --------- ELEMENTS -----------------------------------------------
+    class SearchTextElement(BasePageElement):
+        locator = "search_query"
+
+    search_text_element = SearchTextElement()
+
+    # --------- ACTIONS --------------------------------------------------
+
     def is_title_matches(self):
         return "My Store" in self.driver.title
 
@@ -37,13 +48,38 @@ class BasePage:
     def is_page_correct(self):
         return True
 
+    def is_signed_in(self):
+        try:
+            self.driver.find_element(*Locators.ACCOUNT_BUTTON)
+        except NoSuchElementException:
+            return False
+        else:
+            return True
+
+    def sign_in(self):
+        if self.is_signed_in():
+            return
+        element = self.driver.find_element(*IndexPageLocators.SIGN_IN_BUTTON)
+        element.click()
+        signInPage = SignInPage(self.driver)
+        assert signInPage.is_page_correct()
+
+        signInPage.email_text_element = "tanner.b.larson@gmail.com"
+        signInPage.password_text_element = "inksplot"
+        signInPage.click_submit_login_button()
+
+        accountPage = AccountPage(self.driver)
+        accountPage.is_page_correct()
+
+    def sign_out(self):
+        if not self.is_signed_in():
+            return
+        element = self.driver.find_element(*Locators.SIGN_OUT_BUTTON)
+        element.click()
+
 
 class HomePage(BasePage):
-    # --------- ELEMENTS -----------------------------------------------
-    class SearchTextElement(BasePageElement):
-        locator = "search_query"
-
-    search_text_element = SearchTextElement()
+    # --------- ELEMENTS -------------------------------------------------
 
     # --------- ACTIONS --------------------------------------------------
     @confirm_correct_page
@@ -64,6 +100,27 @@ class HomePage(BasePage):
     @confirm_correct_page
     def click_logo_button(self):
         element = self.driver.find_element(*IndexPageLocators.LOGO)
+        element.click()
+
+    @confirm_correct_page
+    def click_account_button(self):
+        if not self.is_signed_in():
+            assert False, "Must be signed in for button to exist"
+        element = self.driver.find_element(*IndexPageLocators.ACCOUNT_BUTTON)
+        element.click()
+
+    @confirm_correct_page
+    def click_sign_in_button(self):
+        if self.is_signed_in():
+            assert False, "Must be signed out for button to exist"
+        element = self.driver.find_element(*IndexPageLocators.SIGN_IN_BUTTON)
+        element.click()
+
+    @confirm_correct_page
+    def click_sign_out_button(self):
+        if not self.is_signed_in():
+            assert False, "Must be signed in for button to exist"
+        element = self.driver.find_element(*IndexPageLocators.SIGN_OUT_BUTTON)
         element.click()
 
 
@@ -88,3 +145,21 @@ class AccountPage(BasePage):
 
     # --------- ACTIONS --------------------------------------------------
     pass
+
+
+class SignInPage(BasePage):
+    # --------- ELEMENTS -----------------------------------------------
+    class EmailTextElement(BasePageElement):
+        locator = "email"
+
+    email_text_element = EmailTextElement()
+
+    class PasswordTextElement(BasePageElement):
+        locator = "passwd"
+
+    password_text_element = PasswordTextElement()
+
+    # --------- ACTIONS --------------------------------------------------
+    def click_submit_login_button(self):
+        element = self.driver.find_element(*SignInPageLocators.SUBMIT_LOGIN_BUTTON)
+        element.click()

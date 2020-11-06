@@ -12,7 +12,9 @@ class Locators:
     SEARCH_TEXT_BOX = (By.ID, "search_query_top")
     AD_TOP = (By.CLASS_NAME, "img-responsive")
     LOGO = (By.XPATH, "//img[@class='logo img-responsive']")
-    ACCOUNT_BUTTON = (By.ID, "my-account")
+    ACCOUNT_BUTTON = (By.XPATH, "//a[@class='account']")
+    SIGN_OUT_BUTTON = (By.XPATH, "//a[@title='Log me out']")
+    SIGN_IN_BUTTON = (By.XPATH, "//a[@class='login']")
 
 
 class IndexPageLocators(Locators):
@@ -21,3 +23,7 @@ class IndexPageLocators(Locators):
 
 class SearchResultsPageLocators(Locators):
     pass
+
+
+class SignInPageLocators(Locators):
+    SUBMIT_LOGIN_BUTTON = (By.ID, "SubmitLogin")
