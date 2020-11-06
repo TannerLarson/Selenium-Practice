@@ -24,15 +24,15 @@ class IndexPageTests(unittest.TestCase):
     driver = None
 
     @classmethod
-    def setUpClass(self) -> None:
-        self.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
+    def setUpClass(cls) -> None:
+        cls.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
 
     def setUp(self) -> None:
         self.driver.get("http://automationpractice.com/index.php")
         self.homePage = page.HomePage(self.driver)
 
     def _test_is_index(self):
-        assert self.homePage.is_page_index()
+        assert self.homePage.is_page_correct()
 
     def _test_title(self):
         print("Testing webpage title...")
@@ -42,23 +42,28 @@ class IndexPageTests(unittest.TestCase):
         print("Testing search button...")
         self.homePage.click_search_button()
         search_result_page = page.SearchResultPage(self.driver)
-        assert wait_until(self.driver, search_result_page.is_page_search())
+        assert wait_until(self.driver, search_result_page.is_page_correct())
 
     def _test_top_ad(self):
         print("Testing advertisement at top of website")
         self.homePage.click_ad_top()
         time.sleep(0.5)  # Give driver time to navigate
-        assert self.homePage.is_page_index()
+        assert self.homePage.is_page_correct()
 
     def test_contact_us_button(self):
         print("Testing Contact us button")
         self.homePage.click_contact_us_button()
         contact_page = page.ContactPage(self.driver)
-        assert contact_page.is_page_contact(), "is_page_contact failed"
+        assert contact_page.is_page_correct(), "is_page_contact failed"
+
+    def _test_logo_button(self):
+        print("Testing logo button")
+        self.homePage.click_logo_button()
+        assert self.homePage.is_page_correct(), "is_page_contact failed"
 
     @classmethod
-    def tearDownClass(self) -> None:
-        self.driver.close()
+    def tearDownClass(cls) -> None:
+        cls.driver.close()
 
 
 if __name__ == "__main__":

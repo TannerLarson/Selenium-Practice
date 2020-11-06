@@ -4,29 +4,19 @@ from element import BasePageElement
 
 
 #  --------- Decorators ------------------------------------------
-def confirm_page_index(func):
+def confirm_correct_page(func):
     def func_wrapper(self):
-        if not wait_until_found(self.driver, "//body[@id='index']"):
-            assert False, "Page not found"
-        else:
-            return func(self)
-
-    return func_wrapper
-
-
-def confirm_page_search(func):
-    def func_wrapper(self):
-        if not wait_until_found(self.driver, "//body[@id='search']"):
-            assert False, "Page not found"
-        else:
-            return func(self)
-
-    return func_wrapper
-
-
-def confirm_page_contact(func):
-    def func_wrapper(self):
-        if not wait_until_found(self.driver, "//body[@id='contact']"):
+        xpath = ''
+        print(type(self))
+        if isinstance(self, HomePage):
+            xpath = "//body[@id='index']"
+        elif isinstance(self, SearchResultPage):
+            xpath = "//body[@id='search']"
+        elif isinstance(self, ContactPage):
+            xpath = "//body[@id='contact']"
+        elif isinstance(self, AccountPage):
+            xpath = "//body[@id='my-account']"
+        if not wait_until_found(self.driver, xpath):
             assert False, "Page not found"
         else:
             return func(self)
@@ -40,6 +30,13 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
 
+    def is_title_matches(self):
+        return "My Store" in self.driver.title
+
+    @confirm_correct_page
+    def is_page_correct(self):
+        return True
+
 
 class HomePage(BasePage):
     # --------- ELEMENTS -----------------------------------------------
@@ -49,37 +46,32 @@ class HomePage(BasePage):
     search_text_element = SearchTextElement()
 
     # --------- ACTIONS --------------------------------------------------
-    def is_page_index(self):
-        return self.driver.find_elements_by_xpath("//body[@id='index']")
-
-    def is_title_matches(self):
-        return "My Store" in self.driver.title
-
-    @confirm_page_index
+    @confirm_correct_page
     def click_search_button(self):
         element = self.driver.find_element(*IndexPageLocators.SEARCH_BUTTON)
         element.click()
 
-    @confirm_page_index
+    @confirm_correct_page
     def click_ad_top(self):
         element = self.driver.find_element(*IndexPageLocators.AD_TOP)
         element.click()
 
-    @confirm_page_index
+    @confirm_correct_page
     def click_contact_us_button(self):
         element = self.driver.find_element(*IndexPageLocators.CONTACT_US_BUTTON)
+        element.click()
+
+    @confirm_correct_page
+    def click_logo_button(self):
+        element = self.driver.find_element(*IndexPageLocators.LOGO)
         element.click()
 
 
 class SearchResultPage(BasePage):
     # --------- ELEMENTS -----------------------------------------------
 
-    # --------- TESTS --------------------------------------------------
-
-    def is_page_search(self):
-        return wait_until_found(self.driver, "//body[@id='search']")
-
-    @confirm_page_search
+    # --------- ACTIONS --------------------------------------------------
+    @confirm_correct_page
     def is_results_found(self):
         return "No results were found" not in self.driver.page_source
 
@@ -87,6 +79,12 @@ class SearchResultPage(BasePage):
 class ContactPage(BasePage):
     # --------- ELEMENTS -----------------------------------------------
 
-    # --------- TESTS --------------------------------------------------
-    def is_page_contact(self):
-        return wait_until_found(self.driver, "//body[@id='contact']")
+    # --------- ACTIONS --------------------------------------------------
+    pass
+
+
+class AccountPage(BasePage):
+    # --------- ELEMENTS -----------------------------------------------
+
+    # --------- ACTIONS --------------------------------------------------
+    pass
