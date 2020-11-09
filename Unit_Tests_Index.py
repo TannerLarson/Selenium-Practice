@@ -4,113 +4,156 @@ import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
-import Base_Tests as gt
+import Base_Tests as base
 
 
-def wait_until(driver, func):
-    """
-    :param driver: Driver to put on pause
-    :param func: Function that returns a boolean
-    :return: True if found, False if timed out
-    """
-    try:
-        WebDriverWait(driver, 5).until(lambda x: func)
-    except TimeoutException:
-        return False
-    return True
+# TODO: Create tests for mobile website
 
-
-class IndexPageTests(unittest.TestCase):
-    driver = None
-
+class IndexPageUnitTests(base.BaseUnitTests):
     @classmethod
     def setUpClass(cls) -> None:
         cls.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
 
     def setUp(self) -> None:
         self.driver.get("http://automationpractice.com/index.php")
-        self.homePage = page.HomePage(self.driver)
+        self.mainPage = page.HomePage(self.driver)
 
-    def _test_is_index(self):
-        assert self.homePage.is_page_correct()
-
-    def _test_title(self):
-        print("Testing webpage title...")
-        assert self.homePage.is_title_matches()
-
-    def _test_search_button(self):
-        print("Testing search button...")
-        self.homePage.click_search_button()
-        search_result_page = page.SearchResultPage(self.driver)
-        assert wait_until(self.driver, search_result_page.is_page_correct())
-
-    def _test_top_ad(self):
-        print("Testing advertisement at top of website")
-        self.homePage.click_ad_top()
-        time.sleep(0.5)  # Give driver time to navigate
-        assert self.homePage.is_page_correct()
-
-    def _test_contact_us_button(self):
-        print("Testing Contact us button")
-        self.homePage.click_contact_us_button()
-        contactPage = page.ContactPage(self.driver)
-        assert contactPage.is_page_correct()
-
-    def _test_sign_in_button(self):
-        print("Testing Sign in button")
-        self.homePage.click_sign_in_button()
-        signInPage = page.SignInPage(self.driver)
-        assert signInPage.is_page_correct()
-
-    def _test_account_button(self):
-        print("Testing Account button")
-        self.homePage.sign_in()
-        self.driver.get("http://automationpractice.com/index.php")
-        assert self.homePage.is_page_correct()
-
-        self.homePage.click_account_button()
-        accountPage = page.AccountPage(self.driver)
-        assert accountPage.is_page_correct()
-
-    def _test_sign_out_button(self):
-        print("Testing Sign out button")
-        self.homePage.sign_in()
-        self.driver.get("http://automationpractice.com/index.php")
-        assert self.homePage.is_page_correct()
-
-        self.homePage.click_sign_out_button()
-        assert self.homePage.is_page_correct()
-
-    def _test_cart_button_empty(self):
+    def _test_homeslider_left_button(self):
         pass
 
-    def _test_cart_button_full(self):
+    def _test_homeslider_right_button(self):
         pass
 
-    def _test_cart_dropdown_empty(self):
+    def _test_homeslider_two_women_shop_now_button(self):
         pass
 
-    def _test_cart_dropdown_full(self):
+    def _test_homeslider_two_women_picture_link(self):
         pass
 
-    def _test_logo_button(self):
-        print("Testing logo button")
-        self.homePage.click_logo_button()
-        assert self.homePage.is_page_correct()
-
-    def _test_women_button(self):
+    def _test_homeslider_one_woman_shop_now_button(self):
         pass
 
-    def _test_dresses_button(self):
+    def _test_homeslider_one_woman_picture_link(self):
         pass
 
-    def _test_t_shirts_button(self):
+    def _test_homeslider_man_and_woman_shop_now_button(self):
         pass
 
-    def _test_women_dropdown(self):
+    def _test_homeslider_man_and_woman_picture_link(self):
         pass
 
-    def _test_dresses_dropdown(self):
+    def _test_3days_sale_link(self):
+        pass
+
+    def _test_only_online_link(self):
+        pass
+
+    def _test_popular_button(self):
+        pass
+
+    def _test_best_sellers_button(self):
+        pass
+
+    def _test_printed_chiffon_dress_picture_link(self):
+        pass
+
+    def _test_printed_chiffon_dress_quick_view_button(self):
+        pass
+
+    def _test_printed_chiffon_dress_add_to_cart_button(self):
+        pass
+
+    def _test_printed_chiffon_dress_more_button(self):
+        pass
+
+    def _test_blouse_picture_link(self):
+        pass
+
+    def _test_blouse_quick_view_button(self):
+        pass
+
+    def _test_blouse_add_to_cart_button(self):
+        pass
+
+    def _test_blouse_more_button(self):
+        pass
+
+    def _test_printed_dress_1_picture_link(self):
+        pass
+
+    def _test_printed_dress_1_quick_view_button(self):
+        pass
+
+    def _test_printed_dress_1_add_to_cart_button(self):
+        pass
+
+    def _test_printed_dress_1_more_button(self):
+        pass
+
+    def _test_printed_dress_2_picture_link(self):
+        pass
+
+    def _test_printed_dress_2_quick_view_button(self):
+        pass
+
+    def _test_printed_dress_2_add_to_cart_button(self):
+        pass
+
+    def _test_printed_dress_2_more_button(self):
+        pass
+
+    def _test_printed_summer_dress_1_picture_link(self):
+        pass
+
+    def _test_printed_summer_dress_1_quick_view_button(self):
+        pass
+
+    def _test_printed_summer_dress_1_add_to_cart_button(self):
+        pass
+
+    def _test_printed_summer_dress_1_more_button(self):
+        pass
+
+    def _test_printed_summer_dress_2_picture_link(self):
+        pass
+
+    def _test_printed_summer_dress_2_quick_view_button(self):
+        pass
+
+    def _test_printed_summer_dress_2_add_to_cart_button(self):
+        pass
+
+    def _test_printed_summer_dress_2_more_button(self):
+        pass
+
+    def _test_t_shirt_picture_link(self):
+        pass
+
+    def _test_t_shirt_quick_view_button(self):
+        pass
+
+    def _test_t_shirt_add_to_cart_button(self):
+        pass
+
+    def _test_t_shirt_more_button(self):
+        pass
+
+    def _test_top_trends_picture_link(self):
+        pass
+
+    def _test_men_coats_picture_link(self):
+        pass
+
+    def _test_women_coats_picture_link(self):
+        pass
+
+    def _test_sunglasses_picture_link(self):
+        pass
+
+    def _test_handbags_picture_link(self):
+        pass
+
+    def _test_selenium_framework_button(self):
         pass
 
     @classmethod
@@ -118,21 +161,5 @@ class IndexPageTests(unittest.TestCase):
         cls.driver.close()
 
 
-def run_global_and_home_unit_tests():
-    test_classes_to_run = [gt.GlobalTests("http://automationpractice.com/index.php",
-                                          page.HomePage), IndexPageTests]
-    loader = unittest.TestLoader()
-
-    suites_list = []
-    for test_class in test_classes_to_run:
-        suite = loader.loadTestsFromTestCase(test_class)
-        suites_list.append(suite)
-
-    big_suite = unittest.TestSuite(suites_list)
-
-    runner = unittest.TextTestRunner()
-    results = runner.run(big_suite)
-
-
 if __name__ == "__main__":
-    run_global_and_home_unit_tests()
+    unittest.main()

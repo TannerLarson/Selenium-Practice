@@ -1,29 +1,24 @@
 import unittest
 from selenium import webdriver
+import Base_Tests as base
 import page
 
 
-class IndexPageTests(unittest.TestCase):
+class IndexPageTests(base.BaseIntegrationTests):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
 
     def setUp(self) -> None:
-        self.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
         self.driver.get("http://automationpractice.com/index.php")
+        self.mainPage = page.HomePage(self.driver)
 
-    def tearDown(self) -> None:
+    @classmethod
+    def tearDownClass(self) -> None:
         self.driver.close()
 
     # --------- TESTS -----------------------------------------------
 
-    def test_search_skirt(self):
-        # test_title
-        homePage = page.HomePage(self.driver)
-        assert homePage.is_title_matches()
-
-        homePage.search_text_element = "skirt"
-        homePage.click_search_button()
-        search_result_page = page.SearchResultPage(self.driver)
-        assert search_result_page.is_results_found()
-        self.driver.implicitly_wait(5)
 
 if __name__ == "__main__":
     unittest.main()

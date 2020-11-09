@@ -1,7 +1,6 @@
 import unittest
 import page
 import time
-from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import *
 
@@ -19,26 +18,17 @@ def wait_until(driver, func):
     return True
 
 
-class GlobalTests(unittest.TestCase):
+class BaseUnitTests(unittest.TestCase):
     driver = None
 
-    def __init__(self, page_to_test, page_class):
-        super().__init__()
-        self.page_to_test = page_to_test
-        self.page_class = page_class
+    mainPage = None
 
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.driver = webdriver.Chrome("C:\Program Files (x86)\chromedriver.exe")
-
-    def setUp(self) -> None:
-        self.driver.get(self.page_to_test)
-        self.mainPage = self.page_class(self.driver)
+    # --------- TOP OF PAGE ---------------------------------------------
 
     def _test_is_page_correct(self):
         assert self.mainPage.is_page_correct()
 
-    def test_title(self):
+    def _test_title(self):
         print("Testing webpage title...")
         assert self.mainPage.is_title_matches()
 
@@ -62,6 +52,7 @@ class GlobalTests(unittest.TestCase):
 
     def _test_sign_in_button(self):
         print("Testing Sign in button")
+        self.mainPage.sign_out()
         self.mainPage.click_sign_in_button()
         signInPage = page.SignInPage(self.driver)
         assert signInPage.is_page_correct()
@@ -85,6 +76,11 @@ class GlobalTests(unittest.TestCase):
         self.mainPage.click_sign_out_button()
         assert self.mainPage.is_page_correct()
 
+    def _test_logo_button(self):
+        print("Testing logo button")
+        self.mainPage.click_logo_button()
+        assert self.mainPage.is_page_correct()
+
     def _test_cart_button_empty(self):
         pass
 
@@ -96,11 +92,6 @@ class GlobalTests(unittest.TestCase):
 
     def _test_cart_dropdown_full(self):
         pass
-
-    def _test_logo_button(self):
-        print("Testing logo button")
-        self.mainPage.click_logo_button()
-        assert self.mainPage.is_page_correct()
 
     def _test_women_button(self):
         pass
@@ -115,6 +106,98 @@ class GlobalTests(unittest.TestCase):
         pass
 
     def _test_dresses_dropdown(self):
+        pass
+
+    # --------- BOTTOM OF PAGE --------------------------------------------
+    def _test_submit_newsletter_button(self):
+        pass
+
+    def _test_facebook_button(self):
+        pass
+
+    def _test_twitter_button(self):
+        pass
+
+    def _test_youtube_button(self):
+        pass
+
+    def _test_google_plus_button(self):
+        pass
+
+    def _test_categories_women(self):
+        pass
+
+    def _test_information_specials_button(self):
+        pass
+
+    def _test_information_new_products_Button(self):
+        pass
+
+    def _test_information_best_sellers(self):
+        pass
+
+    def _test_information_our_stores(self):
+        pass
+
+    def _test_information_contact_us(self):
+        pass
+
+    def _test_information_terms_conditions(self):
+        pass
+
+    def _test_information_about_us(self):
+        pass
+
+    def _test_information_sitemap(self):
+        pass
+
+    def _test_my_account_my_orders(self):
+        pass
+
+    def _test_my_account_my_credit_slips(self):
+        pass
+
+    def _test_my_account_my_addresses(self):
+        pass
+
+    def _test_my_account_my_personal_info(self):
+        pass
+
+    def _test_my_account_sign_out(self):
+        pass
+
+    def _test_email_support_link(self):
+        pass
+
+    def _test_ecommerce_link(self):
+        pass
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.driver.close()
+
+
+class BaseIntegrationTests(unittest.TestCase):
+    driver = None
+
+    mainPage = None
+
+    # --------- TOP OF PAGE ---------------------------------------------
+    def _test_search_skirt(self):
+        # test_title
+        homePage = page.HomePage(self.driver)
+        assert homePage.is_title_matches()
+
+        homePage.search_text_element = "skirt"
+        homePage.click_search_button()
+        search_result_page = page.SearchResultPage(self.driver)
+        assert search_result_page.is_results_found()
+
+    # --------- BOTTOM OF PAGE ---------------------------------------------
+    def _test_newsletter_invalid_email(self):
+        pass
+
+    def _test_newsletter_valid_email(self):
         pass
 
     @classmethod

@@ -161,5 +161,6 @@ class SignInPage(BasePage):
 
     # --------- ACTIONS --------------------------------------------------
     def click_submit_login_button(self):
+        # TODO: ERROR: test_account_button NoSuchElementException
         element = self.driver.find_element(*SignInPageLocators.SUBMIT_LOGIN_BUTTON)
         element.click()
